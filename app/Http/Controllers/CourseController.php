@@ -40,7 +40,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return self::success(new CourseResource($course->load(['instructor', 'category', 'lessons.files','rates'])));
+        return self::success(new CourseResource($course->load(['rates','instructor', 'category', 'lessons.files'])));
     }
 
     /**

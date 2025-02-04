@@ -28,6 +28,7 @@ class CourseResource extends JsonResource
             'instructor' => new InstructorResource($this->whenLoaded('instructor')),
             'category' => $this->whenLoaded('category'),
             'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
+            'rates' => $this->whenLoaded('rates'),
 
         ];
     }

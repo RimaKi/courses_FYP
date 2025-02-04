@@ -64,7 +64,7 @@ class UserService
             $account = auth()->user()->account;
             $instructor_account = $course->instructor->account;
             if ($account->balance < $course->price) {
-                throw new Exception("doesn't hava a balance for complete payment method");
+                throw new Exception("There is no balance to complete the payment process.");
             }
             $account->update(['balance' => ($account->balance - $course->price)]);
             $instructor_account->update(['balance' => ($instructor_account->balance + $course->price)]);

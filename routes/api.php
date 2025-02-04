@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FileController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,9 @@ Route::post('requests', [RequestController::class, 'store']);
 Route::post('forgot-password', [PasswordController::class, 'sendResetCode']);
 Route::post('reset-password', [PasswordController::class, 'resetPassword']);
 
+Route::apiResource('courses', CourseController::class)->only('index');
+Route::get('categories', [CategoryController::class, 'index']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [UserController::class, 'logout']);
@@ -41,15 +46,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('requests/{request}/change-status', [RequestController::class, 'changeStatus']);
     });
 
-    Route::apiResource('courses', CourseController::class);
+    Route::apiResource('courses', CourseController::class)->except('index');
     Route::apiResource('lessons', LessonController::class)->except('index');
 
-    Route::post('files',[FileController::class,'store']);
-    Route::delete('files/{file}',[FileController::class,'destroy']);
+    Route::post('files', [FileController::class, 'store']);
+    Route::delete('files/{file}', [FileController::class, 'destroy']);
 
-    Route::post('/accounts/charge',[\App\Http\Controllers\AccountController::class,"chargeAccount"]);
-    Route::post('/payment-course/{course}',[UserController::class,'paymentCourse']);
+    Route::post('/accounts/charge', [\App\Http\Controllers\AccountController::class, "chargeAccount"]);
+    Route::post('/payment-course/{course}', [UserController::class, 'paymentCourse']);
 
-
+    Route::apiResource('rates',RateController::class)->except(['index','show']);
 });
 

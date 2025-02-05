@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     use HasFactory;
-    protected $appends=[
+
+    protected $appends = [
         'rating'
     ];
 
@@ -25,10 +26,11 @@ class Course extends Model
 
     public function instructor()
     {
-        return $this->belongsTo(User::class,'instructor_id','id');
+        return $this->belongsTo(User::class, 'instructor_id', 'id');
     }
 
-    public function users(){
+    public function users()
+    {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
@@ -38,16 +40,23 @@ class Course extends Model
         return $this->hasMany(Lesson::class);
     }
 
-    public function rates(){
+    public function rates()
+    {
         return $this->hasMany(Rate::class);
     }
 
-    public function getRatingAttribute(){
+    public function getRatingAttribute()
+    {
         return $this->rates()->avg('rate');
     }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

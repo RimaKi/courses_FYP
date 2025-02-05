@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RateController;
+use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,8 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('files', [FileController::class, 'store']);
     Route::delete('files/{file}', [FileController::class, 'destroy']);
 
-    Route::post('/accounts/charge', [\App\Http\Controllers\AccountController::class, "chargeAccount"]);
+    Route::post('/accounts/charge', [AccountController::class, "chargeAccount"]);
     Route::post('/payment-course/{course}', [UserController::class, 'paymentCourse']);
+    Route::get('payments',[AccountController::class,'getPayments']);
 
     Route::apiResource('rates',RateController::class)->except(['index','show']);
 });

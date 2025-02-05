@@ -7,7 +7,6 @@ use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Course;
-use App\Models\User;
 use App\Services\UserService;
 
 class UserController extends Controller
@@ -39,7 +38,14 @@ class UserController extends Controller
 
     public function profile()
     {
-        return new UserResource(auth()->user()->load(['account', 'courses']));
+        $user = auth()->user();
+        if ($user->hasRole('student')) {
+            $user = $user->load('courses');
+        }
+        if ($user->hasRole('instructor')) {
+            $user = $user->load('coursesForInstructor');
+        }
+        return new UserResource($user->load('account'));
     }
 
     public function editProfile(EditProfileRequest $request)

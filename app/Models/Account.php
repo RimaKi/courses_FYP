@@ -18,4 +18,15 @@ class Account extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function intendedTransaction()
+    {
+        return $this->hasMany(Transaction::class, 'intended_account_id', 'id');
+    }
+
 }

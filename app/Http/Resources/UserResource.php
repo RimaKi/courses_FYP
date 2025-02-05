@@ -22,6 +22,10 @@ class UserResource extends JsonResource
             $this->mergeWhen($this->hasRole('instructor'),
                 new InstructorResource(optional($this->instructor))
             ),
+            'account' => $this->whenLoaded('account'),
+            'courses' => $this->relationLoaded('courses') ? $this->courses :
+                ($this->relationLoaded('coursesForInstructor') ? $this->coursesForInstructor : [])
+
         ];
     }
 }

@@ -18,12 +18,17 @@ class Transaction extends Model
 
     public function account()
     {
-        return $this->belongsTo(Account::class, 'account_id', 'id');
+        return $this->belongsTo(Account::class);
     }
 
     public function intendedAccount()
     {
         return $this->belongsTo(Account::class, 'intended_account_id', 'id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 
 }

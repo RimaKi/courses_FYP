@@ -62,10 +62,16 @@ class User extends Authenticatable
         return $this->hasOne(Instructor::class);
     }
 
+
     public function courses()
     {
         return $this->belongsToMany(Course::class)->withTimestamps();
     }
+
+    public function coursesForInstructor(){
+        return $this->hasMany(Course::class,'instructor_id',"id");
+    }
+
 
     public function rates()
     {
@@ -80,6 +86,16 @@ class User extends Authenticatable
     public function InstructorCourse()
     {
         return $this->hasOneThrough(Course::class, Instructor::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasManyThrough(Transaction::class, Account::class, 'user_id', 'account_id', 'id', 'id');
+    }
+
+    public function transactionsForInstructor()
+    {
+        return $this->hasManyThrough(Transaction::class, Account::class, 'user_id', 'intended_account_id', 'id', 'id');
     }
 
 }

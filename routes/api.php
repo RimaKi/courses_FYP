@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('files/{file}', [FileController::class, 'destroy']);
 
     Route::post('/accounts/charge', [AccountController::class, "chargeAccount"]);
-    Route::post('/payment-course/{course}', [UserController::class, 'paymentCourse']);
+    Route::post('/buy-course/{course}', [UserController::class, 'paymentCourse']);
     Route::get('payments',[AccountController::class,'getPayments']);
 
     Route::apiResource('rates',RateController::class)->except(['index','show']);

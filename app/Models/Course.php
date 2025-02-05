@@ -21,7 +21,8 @@ class Course extends Model
         'description',
         'price',
         'cover',
-        'category_id'
+        'category_id',
+        'status'
     ];
 
     public function instructor()

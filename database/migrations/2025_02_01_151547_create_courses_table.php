@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->float('price');
             $table->string('cover')->nullable();
             $table->foreignId('category_id')->constrained('categories');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

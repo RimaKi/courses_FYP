@@ -5,7 +5,7 @@ namespace App\Http\Requests\Course;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class ChangeStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'duration' => ['required', 'numeric'],
-            'level' => ['required', Rule::in(['beginner', 'intermediate', 'advance'])],
-            'title' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'price' => ['required', 'numeric'],
-            'cover' => ['file'],
-            'category_id'=>['required','exists:categories,id']
+            'status' => ['required', Rule::in(['accepted', 'rejected'])]
         ];
     }
 }

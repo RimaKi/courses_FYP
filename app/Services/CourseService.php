@@ -9,16 +9,18 @@ class CourseService
 {
     public function store(array $data)
     {
+        $data['instructor_id'] = auth()->user()->id;
         if (array_key_exists('cover', $data)) {
             $data['cover'] = Storage::disk('public')->put('/course-cover', $data['cover']);
         }
         Course::create($data);
     }
 
-    public function update(Course $course ,array $data){
+    public function update(Course $course, array $data)
+    {
         $data = array_filter($data);
-        if($data['cover']){
-            $data['cover']=(new FileService())->updatePhoto($data['cover'],$course->cover,'course-cover');
+        if ($data['cover']) {
+            $data['cover'] = (new FileService())->updatePhoto($data['cover'], $course->cover, 'course-cover');
         }
         $course->update($data);
         return $course;

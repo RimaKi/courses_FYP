@@ -25,6 +25,7 @@ class CourseResource extends JsonResource
             'cover' => $this->cover,
             'rating' => $this->rating,
             'category_id' => $this->category_id,
+            'status'=>$this->status,
             'instructor' => new InstructorResource($this->whenLoaded('instructor')),
             'category' => $this->whenLoaded('category'),
             'lessons' => LessonResource::collection($this->whenLoaded('lessons')),

@@ -23,7 +23,6 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'instructor_id'=>['nullable','exists:users,id'],
             'duration'=>['nullable','numeric'],
             'level' => ['nullable', Rule::in(['beginner', 'intermediate', 'advance'])],
             'title'=>['nullable','string'],

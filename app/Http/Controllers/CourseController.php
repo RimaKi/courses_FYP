@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Course\ChangeStatusRequest;
 use App\Http\Requests\Course\StoreRequest;
 use App\Http\Requests\Course\UpdateRequest;
 use App\Http\Resources\CourseResource;
@@ -22,7 +23,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $data = Course::all();
+        $data = Course::where('status', 'accepted')->latest()->get();
         return self::success(CourseResource::collection($data));
     }
 
@@ -40,7 +41,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return self::success(new CourseResource($course->load(['rates','instructor', 'category', 'lessons.files'])));
+        return self::success(new CourseResource($course->load(['rates', 'instructor', 'category', 'lessons.files'])));
     }
 
     /**
@@ -59,5 +60,17 @@ class CourseController extends Controller
     {
         $course->delete();
         return self::success(null, 'deleted successfully');
+    }
+
+    public function changeStatus(ChangeStatusRequest $request, Course $course)
+    {
+        $course->update(['status' => $request->status]);
+        return self::success(null, 'updated status successfully');
+    }
+
+    public function pendingCourse()
+    {
+        $courses = Course::where('status', 'pending')->latest()->get();
+        return self::success(CourseResource::collection($courses));
     }
 }

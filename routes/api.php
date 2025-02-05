@@ -48,6 +48,10 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::apiResource('courses', CourseController::class)->except('index');
+    Route::put('courses/{course}/change-status',[CourseController::class,'changeStatus']);
+    Route::get('pending-courses',[CourseController::class,'pendingCourse']);
+
+
     Route::apiResource('lessons', LessonController::class)->except('index');
 
     Route::post('files', [FileController::class, 'store']);

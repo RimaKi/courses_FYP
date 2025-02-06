@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\EditProfileRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
+use App\Http\Requests\User\StoreRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Course;
 use App\Services\UserService;
@@ -59,5 +60,11 @@ class UserController extends Controller
         $this->userService->paymentCourse($course);
         return self::success(null, 'payment successfully');
     }
+
+    public function store(StoreRequest $request){
+        $this->userService->store($request->validated());
+        return self::success(null,'created successfully');
+    }
+
 
 }

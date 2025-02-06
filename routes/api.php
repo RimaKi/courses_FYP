@@ -1,15 +1,15 @@
 <?php
 
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\RateController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\RateController;
-use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,22 +45,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('requests/', [RequestController::class, 'index']);
         Route::post('requests/{request}/change-status', [RequestController::class, 'changeStatus']);
+
+        Route::put('courses/{course}/change-status', [CourseController::class, 'changeStatus']);
+        Route::get('pending-courses', [CourseController::class, 'pendingCourse']);
+        Route::post('/accounts/charge', [AccountController::class, "chargeAccount"]);
+        Route::get('payments/all', [AccountController::class, 'allPayment']);
+        Route::apiResource('users', UserController::class);
     });
 
     Route::apiResource('courses', CourseController::class)->except('index');
-    Route::put('courses/{course}/change-status',[CourseController::class,'changeStatus']);
-    Route::get('pending-courses',[CourseController::class,'pendingCourse']);
-
-
     Route::apiResource('lessons', LessonController::class)->except('index');
 
     Route::post('files', [FileController::class, 'store']);
     Route::delete('files/{file}', [FileController::class, 'destroy']);
 
-    Route::post('/accounts/charge', [AccountController::class, "chargeAccount"]);
     Route::post('/buy-course/{course}', [UserController::class, 'paymentCourse']);
-    Route::get('payments',[AccountController::class,'getPayments']);
+    Route::get('payments', [AccountController::class, 'getPayments']);
 
-    Route::apiResource('rates',RateController::class)->except(['index','show']);
+    Route::apiResource('rates', RateController::class)->except(['index', 'show']);
 });
 

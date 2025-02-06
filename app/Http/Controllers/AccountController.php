@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Account\ChargeRequest;
 use App\Http\Resources\TransactionResource;
+use App\Models\Transaction;
 use App\Services\AccountService;
 
 class AccountController extends Controller
@@ -27,5 +28,10 @@ class AccountController extends Controller
         return self::success(TransactionResource::collection($payments));
     }
 
+    public function allPayment()
+    {
+        $transactions = Transaction::with(['course', 'account', 'intendedAccount'])->get();
+        return self::success(TransactionResource::collection($transactions));
+    }
 
 }

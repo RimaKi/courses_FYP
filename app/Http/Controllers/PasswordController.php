@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use mysql_xdevapi\Exception;
 
 class PasswordController extends Controller
 {
@@ -19,11 +18,10 @@ class PasswordController extends Controller
 
         $token = Str::random(6);
 
-        DB::table('password_resets')->updateOrInsert(
+        $d = DB::table('password_reset_tokens')->updateOrInsert(
             ['email' => $request->email],
             ['token' => $token, 'created_at' => now()]
         );
-
         Mail::raw("Your verification code is: $token", function ($message) use ($request) {
             $message->to($request->email)->subject('Password Reset Verification Code');
         });
@@ -39,19 +37,19 @@ class PasswordController extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
-        $reset = DB::table('password_resets')
+        $reset = DB::table('password_reset_tokens')
             ->where('email', $request->email)
             ->where('token', $request->token)
             ->first();
 
         if (!$reset || Carbon::parse($reset->created_at)->addMinutes(15)->isPast()) {
-            throw new Exception('Invalid or expired token.', 400);
+            throw new \Exception('Invalid or expired token.', 400);
         }
 
         $user = \App\Models\User::where('email', $request->email)->first();
         $user->update(['password' => Hash::make($request->password)]);
 
-        DB::table('password_resets')->where('email', $request->email)->delete();
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
         return self::success(null, 'Password reset successful.');
     }

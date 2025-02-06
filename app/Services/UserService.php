@@ -78,4 +78,16 @@ class UserService
         });
     }
 
+    public function store(array $data){
+        if (array_key_exists('profile_picture', $data)) {
+            $data['profile_picture'] = Storage::disk('public')->put("/profile", $data['profile_picture']);
+        }
+        $user = User::create($data);
+        $user->assignRole($data['role']);
+        if(array_key_exists('instructor',$data)){
+            $data['user_id']=$user->id;
+            Instructor::create($data);
+        }
+    }
+
 }

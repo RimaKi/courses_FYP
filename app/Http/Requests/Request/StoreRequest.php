@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
             'email'=>['required','email','unique:requests,email'],
             'password'=>['required','string','min:8'],
             'education'=>['required','string'],
-            'specialization'=>'required','string',
+            'specialization'=>['required','string'],
             'summery'=>['string'],
             'cv'=>['required','file'],
         ];

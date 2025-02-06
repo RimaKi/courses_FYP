@@ -6,8 +6,10 @@ use App\Http\Requests\User\EditProfileRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Http\Requests\User\StoreRequest;
+use App\Http\Requests\User\updateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Course;
+use App\Models\User;
 use App\Services\UserService;
 
 class UserController extends Controller
@@ -61,10 +63,35 @@ class UserController extends Controller
         return self::success(null, 'payment successfully');
     }
 
-    public function store(StoreRequest $request){
+    public function store(StoreRequest $request)
+    {
         $this->userService->store($request->validated());
-        return self::success(null,'created successfully');
+        return self::success(null, 'created successfully');
     }
 
+    public function update(updateRequest $request, User $user)
+    {
+        $user = $this->userService->update($request->validated(), $user);
+        return self::success(new UserResource($user), 'updated successfully');
+    }
+
+    public function index()
+    {
+        $users = User::oldest('name')->with('roles')->get();
+        return self::success(UserResource::collection($users));
+    }
+
+    public function show(User $user)
+    {
+        $user->hasRole('instructor') ? $user->load(['instructor', 'coursesForInstructor']) :
+            ($user->hasRole('student') ? $user->load('courses') : $user);
+        return self::success(new UserResource($user));
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return self::success(null, 'deleted successfully');
+    }
 
 }

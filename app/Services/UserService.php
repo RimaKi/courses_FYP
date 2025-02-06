@@ -79,15 +79,40 @@ class UserService
     }
 
     public function store(array $data){
-        if (array_key_exists('profile_picture', $data)) {
-            $data['profile_picture'] = Storage::disk('public')->put("/profile", $data['profile_picture']);
-        }
-        $user = User::create($data);
-        $user->assignRole($data['role']);
-        if(array_key_exists('instructor',$data)){
-            $data['user_id']=$user->id;
-            Instructor::create($data);
-        }
+        DB::transaction(function () use ($data){
+            if (array_key_exists('profile_picture', $data)) {
+                $data['profile_picture'] = Storage::disk('public')->put("/profile", $data['profile_picture']);
+            }
+            $user = User::create($data);
+            $user->assignRole($data['role']);
+            if(array_key_exists('instructor',$data)){
+                $data['instructor']['user_id']=$user->id;
+                if(isset($data['instructor']['cv'])){
+                    $data['instructor']['cv'] = Storage::disk('public')->put('/cv', $data['instructor']['cv']);
+                }
+                Instructor::create($data['instructor']);
+            }
+        });
+
+    }
+
+    public function update(array $data,$user){
+       $user = DB::transaction(function ()use($data,$user){
+           $data = array_filter($data);
+           if (array_key_exists('profile_picture', $data)) {
+               $data['profile_picture'] = (new FileService())->updatePhoto($data['profile_picture'],$user->profile_picture,'/profile');
+           }
+           $user->update($data);
+           if(array_key_exists('instructor',$data) && $user->hasRole('instructor')){
+               if (array_key_exists('cv',$data['instructor'])) {
+                   $data['instructor']['cv'] = (new FileService())->updatePhoto($data['instructor']['cv'],$user->instructor->cv,'/cv');
+               }
+               $user->instructor()->update($data['instructor']);
+               $user->load('instructor');
+           }
+           return $user;
+       });
+       return $user;
     }
 
 }

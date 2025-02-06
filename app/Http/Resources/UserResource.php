@@ -23,8 +23,10 @@ class UserResource extends JsonResource
                 new InstructorResource(optional($this->instructor))
             ),
             'account' => $this->whenLoaded('account'),
-            'courses' => $this->relationLoaded('courses') ? $this->courses :
-                ($this->relationLoaded('coursesForInstructor') ? $this->coursesForInstructor : [])
+            'courses' => $this->whenLoaded('courses', fn() => $this->courses,
+                $this->whenLoaded('coursesForInstructor', fn() => $this->coursesForInstructor)
+            ),
+            'role' => $this->whenLoaded('roles', fn() => optional($this->roles->first())->name),
 
         ];
     }

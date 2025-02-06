@@ -10,6 +10,7 @@ class FileService
 
     public function updatePhoto($file, $path, $new_path)
     {
+        $path = $path ?? "";
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }

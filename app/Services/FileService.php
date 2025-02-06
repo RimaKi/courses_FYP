@@ -10,8 +10,7 @@ class FileService
 
     public function updatePhoto($file, $path, $new_path)
     {
-        $path = $path ?? "";
-        if (Storage::disk('public')->exists($path)) {
+        if ($path && Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
         return Storage::disk('public')->put($new_path, $file);
@@ -26,8 +25,9 @@ class FileService
 
     }
 
-    public function deleteFileLesson(File $file){
-        if(Storage::disk('public')->exists($file->path)){
+    public function deleteFileLesson(File $file)
+    {
+        if (Storage::disk('public')->exists($file->path)) {
             Storage::disk('public')->delete($file->path);
         }
         $file->delete();

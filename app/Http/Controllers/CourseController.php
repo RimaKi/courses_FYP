@@ -23,7 +23,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $data = Course::where('status', 'accepted')->latest()->get();
+        $data = Course::where('status', 'accepted')->with('instructor')->latest()->get();
         return self::success(CourseResource::collection($data));
     }
 

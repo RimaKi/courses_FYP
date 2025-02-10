@@ -94,4 +94,16 @@ class UserController extends Controller
         return self::success(null, 'deleted successfully');
     }
 
+    public function getStudents()
+    {
+        $users = User::role('student')->with('courses:id,title')->oldest('name')->get();
+        return self::success(UserResource::collection($users));
+    }
+
+    public function getInstructors()
+    {
+        $users = User::role('instructor')->oldest('name')->with('instructor')->get();
+        return self::success(UserResource::collection($users));
+    }
+
 }

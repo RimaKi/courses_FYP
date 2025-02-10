@@ -48,9 +48,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::put('courses/{course}/change-status', [CourseController::class, 'changeStatus']);
         Route::get('pending-courses', [CourseController::class, 'pendingCourse']);
+
         Route::post('/accounts/charge', [AccountController::class, "chargeAccount"]);
         Route::get('payments/all', [AccountController::class, 'allPayment']);
+        Route::get('/payments-for-user/{user}',[AccountController::class,'getPaymentsForUser']);
+
+
+        Route::get('/get-students', [UserController::class, 'getStudents']);
+        Route::get('/get-instructors', [UserController::class, 'getInstructors']);
         Route::apiResource('users', UserController::class);
+
     });
 
     Route::apiResource('courses', CourseController::class)->except('index');

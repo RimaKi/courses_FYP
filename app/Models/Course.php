@@ -10,7 +10,7 @@ class Course extends Model
     use HasFactory;
 
     protected $appends = [
-        'rating'
+//        'rating'
     ];
 
     protected $fillable = [

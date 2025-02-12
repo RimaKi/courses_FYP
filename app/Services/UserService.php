@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use mysql_xdevapi\Exception;
 
 class UserService
 {
@@ -64,7 +63,7 @@ class UserService
             $account = auth()->user()->account;
             $instructor_account = $course->instructor->account;
             if ($account->balance < $course->price) {
-                throw new Exception("There is no balance to complete the payment process.");
+                throw new \Exception("There is no balance to complete the payment process.");
             }
             $account->update(['balance' => ($account->balance - $course->price)]);
             $instructor_account->update(['balance' => ($instructor_account->balance + $course->price)]);

@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $user = $this->userService->register($request->validationData());
+        $user = $this->userService->register($request->validated());
         return self::success($user);
     }
 

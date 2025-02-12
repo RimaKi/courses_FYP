@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->integer('duration');
             $table->enum('level', ['beginner', 'intermediate', 'advance']);
             $table->string('title');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->float('price');
             $table->string('cover')->nullable();
             $table->foreignId('category_id')->constrained('categories');

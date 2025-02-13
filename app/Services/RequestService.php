@@ -23,6 +23,7 @@ class RequestService
                 'email'=>$request->email,
                 'password'=>$request->password
             ]);
+            $user->assignRole('instructor');
             Instructor::create([
                 'user_id' => $user->id,
                 'education' => $request->education,

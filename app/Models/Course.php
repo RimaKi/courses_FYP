@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class Course extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
+
+    public $translatable = ['title', 'description'];
 
     protected $appends = [
 //        'rating'
@@ -21,9 +24,20 @@ class Course extends Model
         'description',
         'price',
         'cover',
-        'category_id',
-        'status'
+        'sub_category_id',
+        'status',
+        'course_language'
     ];
+
+    public function getTranslatedLevel(): string
+    {
+        return __('enums.level.' . $this->level);
+    }
+
+    public function getTranslatedLanguage(): string
+    {
+        return __('enums.course_language.' . $this->course_language);
+    }
 
     public function instructor()
     {
@@ -53,7 +67,7 @@ class Course extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'sub_category_id', 'id');
     }
 
     public function transaction()

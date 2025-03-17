@@ -25,8 +25,12 @@ class UpdateRequest extends FormRequest
         return [
             'duration'=>['nullable','numeric'],
             'level' => ['nullable', Rule::in(['beginner', 'intermediate', 'advance'])],
-            'title'=>['nullable','string'],
-            'description'=>['nullable','string'],
+            'title' => ['nullable','array'],
+            'title.en' => ['string'],
+            'title.ar' => ['string'],
+            'description' => ['nullable', 'array'],
+            'description.en' => ['string'],
+            'description.ar' => ['string'],
             'price'=>['nullable','numeric'],
             'cover'=>['nullable','file'],
             'category_id'=>['nullable','exists:categories,id']

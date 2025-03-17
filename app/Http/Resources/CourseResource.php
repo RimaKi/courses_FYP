@@ -18,18 +18,19 @@ class CourseResource extends JsonResource
             'id' => $this->id,
             'instructor_id' => $this->instructor_id,
             'duration' => $this->duration,
-            'level' => $this->level,
+            'level' => $this->getTranslatedLevel(),
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
             'cover' => $this->cover,
             'rating' => $this->rating,
-            'category_id' => $this->category_id,
+            'sub_category_id' => $this->sub_category_id,
             'status'=>$this->status,
+            'course_language'=>$this->getTranslatedLanguage(),
             'instructor' => $this->whenLoaded('instructor', function () {
                 return optional($this->instructor)->name;
             }),
-            'category' => $this->whenLoaded('category'),
+            'sub_category' => new CategoryResource($this->whenLoaded('category')),
             'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
             'rates' => $this->whenLoaded('rates'),
         ];

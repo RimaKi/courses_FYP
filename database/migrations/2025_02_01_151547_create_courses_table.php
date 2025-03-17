@@ -15,12 +15,13 @@ return new class extends Migration {
             $table->foreignId('instructor_id')->constrained('users')->cascadeOnDelete();
             $table->integer('duration');
             $table->enum('level', ['beginner', 'intermediate', 'advance']);
-            $table->string('title');
-            $table->text('description')->nullable();
+            $table->json('title');
+            $table->json('description')->nullable();
             $table->float('price');
             $table->string('cover')->nullable();
-            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('sub_category_id')->constrained('categories')->cascadeOnDelete();
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->enum('course_language',['english','arabic']);
             $table->timestamps();
         });
     }

@@ -35,7 +35,7 @@ class CourseService
     public function update(Course $course, array $data)
     {
         $data = array_filter($data);
-        if ($data['cover']) {
+        if (array_key_exists('cover',$data)) {
             $data['cover'] = (new FileService())->updatePhoto($data['cover'], $course->cover, 'course-cover');
         }
         $course->update($data);

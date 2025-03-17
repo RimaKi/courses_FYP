@@ -23,8 +23,12 @@ class storeRequest extends FormRequest
     {
         return [
             'course_id'=>['required','exists:courses,id'],
-            'title'=>['required','string'],
-            'description'=>['nullable','string']
+            'title'=>['array','required'],
+            'title.en'=>['required_without:lessons.*.title.ar','string'],
+            'title.ar'=>['required_without:lessons.*.title.en','string'],
+            'description'=>['nullable','array'],
+            'description.en'=>['string'],
+            'description.ar'=>['string'],
         ];
     }
 }

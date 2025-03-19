@@ -20,7 +20,8 @@ class LessonResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'course' => new CourseResource($this->whenLoaded('course')),
-            'files'=>$this->whenLoaded('files')
+            'files'=>$this->whenLoaded('files'),
+            'comments'=>CommentResource::collection($this->whenLoaded('comments')),
         ];
     }
 }

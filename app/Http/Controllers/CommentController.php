@@ -15,14 +15,16 @@ class CommentController extends Controller
         return self::success();
     }
 
-    public function update(UpdateRequest $request,Comment $comment){
-        $comment->update(['content'=>$request->get('content')]);
+    public function update(UpdateRequest $request, Comment $comment)
+    {
+        $comment->update(['content' => $request->get('content')]);
         return self::success(new CommentResource($comment));
     }
 
-    public function destroy(Comment $comment){
+    public function destroy(Comment $comment)
+    {
         $comment->deleteOrFail();
-        return self::success(null,'deleted successfully');
+        return self::success(null, 'deleted successfully');
     }
 
 }

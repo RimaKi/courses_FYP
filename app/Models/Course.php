@@ -74,4 +74,9 @@ class Course extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 }

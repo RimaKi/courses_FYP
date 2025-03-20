@@ -10,6 +10,7 @@ use App\Http\Controllers\RateController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,5 +73,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('rates', RateController::class)->except(['index', 'show']);
     Route::apiResource('comments',CommentController::class)->except(['index','show']);
+    Route::apiResource('questions',QuestionController::class)->except('index');
+    Route::get('/exam/{course}',[QuestionController::class,'index']);
 });
 

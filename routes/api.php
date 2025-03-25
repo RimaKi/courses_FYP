@@ -2,15 +2,16 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\UserAnswerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('/accounts/charge', [AccountController::class, "chargeAccount"]);
         Route::get('payments/all', [AccountController::class, 'allPayment']);
-        Route::get('/payments-for-user/{user}',[AccountController::class,'getPaymentsForUser']);
+        Route::get('/payments-for-user/{user}', [AccountController::class, 'getPaymentsForUser']);
 
 
         Route::get('/get-students', [UserController::class, 'getStudents']);
@@ -72,8 +73,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('payments', [AccountController::class, 'getPayments']);
 
     Route::apiResource('rates', RateController::class)->except(['index', 'show']);
-    Route::apiResource('comments',CommentController::class)->except(['index','show']);
-    Route::apiResource('questions',QuestionController::class)->except('index');
-    Route::get('/exam/{course}',[QuestionController::class,'index']);
+    Route::apiResource('comments', CommentController::class)->except(['index', 'show']);
+    Route::apiResource('questions', QuestionController::class)->except('index');
+
+    Route::get('/exam/{course}', [QuestionController::class, 'index']);
+
+    Route::apiResource('/user-answers',UserAnswerController::class)->only('store');
+
+    Route::get('user/{user}/answers/{course}',[UserAnswerController::class,'index']);
+    Route::put('add-mark/{userAnswer}',[UserAnswerController::class,'update']);
+    Route::get('test-result/{courseId}',[UserAnswerController::class,'testResult']);
 });
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -96,6 +97,13 @@ class User extends Authenticatable
     public function transactionsForInstructor()
     {
         return $this->hasManyThrough(Transaction::class, Account::class, 'user_id', 'intended_account_id', 'id', 'id');
+    }
+
+    public function questions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'user_answers')
+            ->withPivot('answer', 'mark','id')
+            ->withTimestamps();
     }
 
 }

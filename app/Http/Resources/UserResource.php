@@ -27,7 +27,7 @@ class UserResource extends JsonResource
                 $this->whenLoaded('coursesForInstructor', fn() => $this->coursesForInstructor)
             ),
             'role' => $this->whenLoaded('roles', fn() => optional($this->roles->first())->name),
-
+            'questions'=> QuestionResource::collection($this->whenLoaded('questions'))
         ];
     }
 }

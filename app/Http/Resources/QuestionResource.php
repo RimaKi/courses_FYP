@@ -22,6 +22,14 @@ class QuestionResource extends JsonResource
             'correct_answer' => $this->correct_answer,
             'mark' => $this->mark,
             'type' => $this->type,
+
+            'user_answer' => $this->whenPivotLoaded('user_answers', function () {
+                return [
+                    'id'=>$this->pivot->id,
+                    'answer' => $this->pivot->answer,
+                    'mark' => $this->pivot->mark,
+                ];
+            }),
         ];
     }
 }

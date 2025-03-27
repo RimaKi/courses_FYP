@@ -15,18 +15,19 @@ class CourseResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'instructor_id' => $this->instructor_id,
-            'duration' => $this->duration,
-            'level' => $this->getTranslatedLevel(),
-            'title' => $this->title,
-            'description' => $this->description,
-            'price' => $this->price,
-            'cover' => $this->cover,
-            'rating' => $this->rating,
-            'sub_category_id' => $this->sub_category_id,
-            'status'=>$this->status,
-            'course_language'=>$this->getTranslatedLanguage(),
+            'id' => $this->whenNotNull($this->id),
+            'instructor_id' => $this->whenNotNull($this->instructor_id),
+            'duration' => $this->whenNotNull($this->duration),
+            'level' => $this->whenNotNull($this->getTranslatedLevel()),
+            'title' => $this->whenNotNull($this->title),
+            'description' => $this->whenNotNull($this->description),
+            'price' => $this->whenNotNull($this->price),
+            'cover' => $this->whenNotNull($this->cover),
+            'rating' => $this->whenNotNull($this->rating),
+            'sub_category_id' => $this->whenNotNull($this->sub_category_id),
+            'status' => $this->whenNotNull($this->status),
+            'course_language' => $this->whenNotNull($this->getTranslatedLanguage()),
+
             'instructor' => $this->whenLoaded('instructor', function () {
                 return optional($this->instructor)->name;
             }),

@@ -10,8 +10,9 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\RequestController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserAnswerController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserFavoritesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,10 +79,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/exam/{course}', [QuestionController::class, 'index']);
 
-    Route::apiResource('/user-answers',UserAnswerController::class)->only('store');
+    Route::apiResource('/user-answers', UserAnswerController::class)->only('store');
 
-    Route::get('user/{user}/answers/{course}',[UserAnswerController::class,'index']);
-    Route::put('add-mark/{userAnswer}',[UserAnswerController::class,'update']);
-    Route::get('test-result/{courseId}',[UserAnswerController::class,'testResult']);
+    Route::get('user/{user}/answers/{course}', [UserAnswerController::class, 'index']);
+    Route::put('add-mark/{userAnswer}', [UserAnswerController::class, 'update']);
+    Route::get('test-result/{courseId}', [UserAnswerController::class, 'testResult']);
+
+    Route::post('favorites/{courseId}', [UserFavoritesController::class, 'toggle']);
+    Route::get('favorites', [UserFavoritesController::class, 'favoritesForUser']);
+    Route::get('recommended-courses', [UserFavoritesController::class, 'recommendedCourses']);
+
+    Route::get('student-instructors',[UserController::class,'studentInstructors']);
+
 });
 

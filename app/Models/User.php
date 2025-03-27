@@ -69,8 +69,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class)->withTimestamps();
     }
 
-    public function coursesForInstructor(){
-        return $this->hasMany(Course::class,'instructor_id',"id");
+    public function coursesForInstructor()
+    {
+        return $this->hasMany(Course::class, 'instructor_id', "id");
     }
 
 
@@ -102,8 +103,13 @@ class User extends Authenticatable
     public function questions(): BelongsToMany
     {
         return $this->belongsToMany(Question::class, 'user_answers')
-            ->withPivot('answer', 'mark','id')
+            ->withPivot('answer', 'mark', 'id')
             ->withTimestamps();
+    }
+
+    public function favoriteCourses()
+    {
+        return $this->belongsToMany(Course::class, 'user_favorites')->withTimestamps();
     }
 
 }

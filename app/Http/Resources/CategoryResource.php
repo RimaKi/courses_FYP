@@ -17,7 +17,7 @@ class CategoryResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-            'category_id'=>$this->category_id,
+            'category_id'=>$this->whenNotNull($this->category_id),
             'main_category'=>new CategoryResource($this->whenLoaded('mainCategory')),
             'sub_category'=>CategoryResource::collection($this->whenLoaded('subCategory'))
         ];

@@ -11,6 +11,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Course;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -106,4 +107,8 @@ class UserController extends Controller
         return self::success(UserResource::collection($users));
     }
 
+    public function studentInstructors(){
+        $instructors = Auth::user()->courses()->with('instructor')->get()->pluck('instructor')->unique();
+        return self::success(UserResource::collection($instructors));
+    }
 }

@@ -10,18 +10,18 @@ class Account extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'account_number',
         'balance'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class,'account_id','id');
     }
 
     public function intendedTransaction()

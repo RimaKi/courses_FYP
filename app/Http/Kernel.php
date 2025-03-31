@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CustomResponse;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 

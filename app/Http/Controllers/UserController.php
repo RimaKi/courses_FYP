@@ -108,7 +108,12 @@ class UserController extends Controller
     }
 
     public function studentInstructors(){
-        $instructors = Auth::user()->courses()->with('instructor')->get()->pluck('instructor')->unique();
-        return self::success(UserResource::collection($instructors));
+        $user = \auth()->user();
+        $users = match (true){
+            $user->hasRole('instructor')=>$user->coursesForInstructor()->with('users')->get()->pluck('users')->flatten()->unique(),
+            default =>$user->courses()->with('instructor')->get()->pluck('instructor')->unique()
+
+        };
+        return self::success(UserResource::collection($users));
     }
 }

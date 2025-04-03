@@ -13,6 +13,7 @@ use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserAnswerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFavoritesController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -90,6 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('recommended-courses', [UserFavoritesController::class, 'recommendedCourses']);
 
     Route::get('student-instructors',[UserController::class,'studentInstructors']);
-
+    Route::apiResource('messages',MessageController::class)->only(['store','update','destroy']);
+    Route::get('chat/{user}',[MessageController::class,'viewChat']);
 });
 

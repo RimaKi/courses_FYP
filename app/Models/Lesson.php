@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\LogOptions as ActivityLogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Translatable\HasTranslations;
 
 class Lesson extends Model
 {
-    use HasFactory,HasTranslations;
+    use HasFactory,HasTranslations, LogsActivity;
 
     public $translatable = ['title','description'];
     protected $fillable = [
@@ -16,6 +19,16 @@ class Lesson extends Model
         'title',
         'description'
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->useAttributeRawValues($this->translatable) // تسجيل القيم المترجمة كـ JSON
+            ->setDescriptionForEvent(fn(string $eventName) => "Lesson No. {$this->id} has been {$eventName}.")
+            ->useLogName('lesson');
+    }
 
     public function course()
     {

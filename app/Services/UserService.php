@@ -39,7 +39,7 @@ class UserService
         return [
             'user' => new UserResource($user),
             'role' => $user->getRoleNames()->first(),
-            'token' => $user->createToken($user->id)->plainTextToken
+            'token' => $token
         ];
     }
 

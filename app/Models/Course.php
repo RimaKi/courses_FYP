@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Translatable\HasTranslations;
 
 class Course extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations, LogsActivity;
 
     public $translatable = ['title', 'description'];
 
@@ -39,6 +41,17 @@ class Course extends Model
         return __('enums.course_language.' . $this->course_language);
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->useAttributeRawValues($this->translatable) // تسجيل القيم المترجمة كـ JSON
+            ->setDescriptionForEvent(fn(string $eventName) => "Course No. {$this->id} has been {$eventName}.")
+            ->useLogName('course');
+    }
+
+
     public function instructor()
     {
         return $this->belongsTo(User::class, 'instructor_id', 'id');
@@ -46,7 +59,7 @@ class Course extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(User::class)->using(CourseUser::class)->withTimestamps();
     }
 
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\UserAnswerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFavoritesController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/get-students', [UserController::class, 'getStudents']);
         Route::get('/get-instructors', [UserController::class, 'getInstructors']);
         Route::apiResource('users', UserController::class);
+        Route::get('activity-log',[ActivityLogController::class,'index']);
 
     });
 

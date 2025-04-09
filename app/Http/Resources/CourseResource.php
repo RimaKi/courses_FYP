@@ -14,13 +14,19 @@ class CourseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $showAllTranslations = $request->query('all_translations') == true;
+
         return [
             'id' => $this->whenNotNull($this->id),
             'instructor_id' => $this->whenNotNull($this->instructor_id),
             'duration' => $this->whenNotNull($this->duration),
             'level' => $this->whenNotNull($this->getTranslatedLevel()),
-            'title' => $this->whenNotNull($this->title),
-            'description' => $this->whenNotNull($this->description),
+            'title' => $this->whenNotNull(
+                $showAllTranslations ? $this->getTranslations('title') : $this->getTranslation('title', app()->getLocale())
+            ),
+            'description' => $this->whenNotNull(
+                $showAllTranslations ? $this->getTranslations('description') : $this->getTranslation('description', app()->getLocale())
+            ),
             'price' => $this->whenNotNull($this->price),
             'cover' => $this->whenNotNull($this->cover),
             'rating' => $this->whenNotNull($this->rating),

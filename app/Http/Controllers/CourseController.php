@@ -8,7 +8,6 @@ use App\Http\Requests\Course\UpdateRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use App\Services\CourseService;
-use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {

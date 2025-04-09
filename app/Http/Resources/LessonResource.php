@@ -14,11 +14,17 @@ class LessonResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $showAllTranslations = $request->query('all_translations') == true;
+
         return [
             'id' => $this->id,
             'course_id' => $this->course_id,
-            'title' => $this->title,
-            'description' => $this->description,
+            'title' => $this->whenNotNull(
+                $showAllTranslations ? $this->getTranslations('title') : $this->getTranslation('title', app()->getLocale())
+            ),
+            'description' => $this->whenNotNull(
+                $showAllTranslations ? $this->getTranslations('description') : $this->getTranslation('description', app()->getLocale())
+            ),
             'course' => new CourseResource($this->whenLoaded('course')),
             'files'=>$this->whenLoaded('files'),
             'comments'=>CommentResource::collection($this->whenLoaded('comments')),

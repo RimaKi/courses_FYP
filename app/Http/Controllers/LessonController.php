@@ -25,7 +25,7 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        return self::success(new LessonResource($lesson->load(['files','comments.replies','comments.user'])));
+        return self::success(new LessonResource($lesson->load(['files','comments.replies.user','comments.user'])));
     }
 
     /**

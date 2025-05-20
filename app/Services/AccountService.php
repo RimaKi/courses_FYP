@@ -9,10 +9,8 @@ use App\Models\User;
 class AccountService
 {
     public function chargeAccount(array $data){
-        $account = Account::query()->firstOrCreate(['user_id' => $data['user_id']], ['balance' => $data['amount']]);
-        if (!$account->wasRecentlyCreated) {
-            $account->update(['balance' => ($account->balance + $data['amount'])]);
-        }
+        $account = User::where('id',$data['user_id'])->first()->account;
+        $account->update(['balance' => ($account->balance + $data['amount'])]);
         return $account;
     }
 
